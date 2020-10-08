@@ -5,9 +5,22 @@ package tictactoe.bll;
  * It is used for games where there are two human players.
  */
 public class GameBoardTwoPlayer implements IGameModel {
+     private int playerId;
+     public static boolean [][] board;
+
+
 
     protected GameBoardTwoPlayer() {
+        //lav et board som er 3x3
+        //lav for loop med x og med y koordinaterne
+        board= new boolean[3][3];
+        for (int x = 0;x<3;x++){
+            for (int y = 0; y<3;y++){
+                board[x][y]=false;
+            }
 
+
+        }
     }
 
     /**
@@ -18,7 +31,8 @@ public class GameBoardTwoPlayer implements IGameModel {
     @Override
     public int getNextPlayer() {
         //TODO Implement this method
-        return 0;
+
+        return playerId;
     }
 
     /**
@@ -32,9 +46,19 @@ public class GameBoardTwoPlayer implements IGameModel {
      * true this method will always return false.
      */
     @Override
-    public boolean play(int col, int row) {
+    public boolean play(int col, int row)
+    {
         //TODO Implement this method
-        return true;
+        if (playerId == 0){playerId =1;}
+        else {playerId =0;}
+        //hvis board feltet ikke er optaget. spil og gør optaget
+        if (board[col][row]==false){
+            board[col][row]=true;
+            return true;
+        }
+        else{return false;}
+
+
     }
 
     /**
@@ -44,11 +68,22 @@ public class GameBoardTwoPlayer implements IGameModel {
      * @return true if the game is over, else it will retun false.
      */
     @Override
-    public boolean isGameOver() {
-        //TODO Implement this method
-        return false;
-    }
 
+    public boolean isGameOver() {
+
+        //TODO Implement this method
+        //ser om der alle pladser er taget
+        for (int x = 0; x < 3; ++x) {
+            for (int y = 0; y < 3; ++y){
+            if (board[x][y] == false) {
+                return false;
+
+            }
+        }
+    }
+                return true;
+
+        }
     /**
      * Gets the id of the winner, -1 if its a draw.
      *
@@ -56,9 +91,14 @@ public class GameBoardTwoPlayer implements IGameModel {
      */
     @Override
     public int getWinner() {
+
         //TODO Implement this method
-        return -1;
+
+
+        return playerId;
+
     }
+
 
     /**
      * Resets the game to a new game state.

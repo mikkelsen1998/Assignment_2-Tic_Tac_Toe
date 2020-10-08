@@ -62,6 +62,7 @@ public class TicTacViewController implements Initializable {
 
         game = GameBoardFactory.getGameModel(currentGameMode);
         setPlayer();
+
     }
 
     /**
@@ -81,18 +82,28 @@ public class TicTacViewController implements Initializable {
                 Button btn = (Button) event.getSource();
                 String xOrO = player == 0 ? "X" : "O";
                 btn.setText(xOrO);
+
                 if (game.isGameOver()) {
                     int winner = game.getWinner();
                     displayWinner(winner);
                     scoreModel.setNextWinner(xOrO);
-                } else {
-                    setPlayer();
+                }
+
+
+                else {
+                     setPlayer();
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+
+
+
+
+
 
     /**
      * Eventhandler that is called whenever the players want's to start a new game.
