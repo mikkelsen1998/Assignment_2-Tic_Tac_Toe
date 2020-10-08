@@ -1,25 +1,26 @@
 package tictactoe.bll;
 
+import java.util.Random;
+
 /**
  * The GameBoardTwoPlayer class is the mandatory implementation for the TicTacToe assignment.
  * It is used for games where there are two human players.
  */
 public class GameBoardTwoPlayer implements IGameModel {
-     private int playerId;
-     public static boolean [][] board;
+    private int playerId; //Keeps track of whose turn it is
+    private final int boardSize = 3; //Define the array size
+    private final int nullVal = -1; //Checks if game is a draw or win
+    private int winnerId; //Keeps track of what player wins
+    private final int[][] gameBoard = new int[boardSize][boardSize]; //2D array to keep track of players input
 
-
-
-    protected GameBoardTwoPlayer() {
-        //lav et board som er 3x3
-        //lav for loop med x og med y koordinaterne
-        board= new boolean[3][3];
-        for (int x = 0;x<3;x++){
-            for (int y = 0; y<3;y++){
-                board[x][y]=false;
+    public GameBoardTwoPlayer()
+    {
+        for (int i = 0; i < boardSize; i++)
+        {
+            for (int j = 0; j < boardSize; j++)
+            {
+                gameBoard[i][j] = nullVal;
             }
-
-
         }
     }
 
@@ -29,9 +30,8 @@ public class GameBoardTwoPlayer implements IGameModel {
      * @return int Id of the next player.
      */
     @Override
-    public int getNextPlayer() {
-        //TODO Implement this method
-
+    public int getNextPlayer()
+    {
         return playerId;
     }
 
@@ -48,64 +48,93 @@ public class GameBoardTwoPlayer implements IGameModel {
     @Override
     public boolean play(int col, int row)
     {
-        //TODO Implement this method
-        if (playerId == 0){playerId =1;}
-        else {playerId =0;}
-        //hvis board feltet ikke er optaget. spil og gør optaget
-        if (board[col][row]==false){
-            board[col][row]=true;
-            return true;
+        if (gameBoard[col][row] != -1)
+        {
+            return false;
+        } else {
+            gameBoard[col][row] = playerId;
         }
-        else{return false;}
-
-
+        if (playerId == 0)
+        {
+            playerId = 1;
+        } else {
+            playerId = 0;
+        }
+        return true;
     }
 
     /**
      * Tells us if the game has ended either by draw or by meeting the winning
      * condition.
      *
-     * @return true if the game is over, else it will retun false.
+     * @return true if the game is over, else it will return false.
      */
     @Override
-
-    public boolean isGameOver() {
-
-        //TODO Implement this method
-        //ser om der alle pladser er taget
-        for (int x = 0; x < 3; ++x) {
-            for (int y = 0; y < 3; ++y){
-            if (board[x][y] == false) {
-                return false;
-
+    public boolean isGameOver()
+    {
+        int chkVal = nullVal;
+        if (gameBoard[0][0] == gameBoard[1][1] && gameBoard[1][1] == gameBoard[2][2] && gameBoard[1][1] != chkVal) //Checks for Diagonal win condition
+        {
+            winnerId = gameBoard[1][1];
+            return true;
+        }
+        if (gameBoard[0][2] == gameBoard[1][1] && gameBoard[1][1] == gameBoard[2][0] && gameBoard[1][1] != chkVal) //Checks for Diagonal win condition
+        {
+            winnerId = gameBoard[1][1];
+            return true;
+        }
+        for (int i = 0; i < boardSize; i++)
+        {
+            if (gameBoard[i][0] == gameBoard[i][1] && gameBoard[i][1] == gameBoard[i][2] && gameBoard[i][0] != chkVal) //Checks for horizontal win conditions
+            {
+                winnerId = gameBoard[i][0];
+                return true;
+            }
+            if (gameBoard[0][i] == gameBoard[1][i] && gameBoard[1][i] == gameBoard[2][i] && gameBoard[0][i] != chkVal) //Checks for vertical win conditions
+            {
+                winnerId = gameBoard[0][i];
+                return true;
             }
         }
-    }
-                return true;
-
+        for (int i = 0; i < boardSize; i++)
+        {
+            for (int j = 0; j < boardSize; j++)
+            {
+                if (gameBoard[i][j] == chkVal) //If no win conditions are met, return -1 and draw game
+                {
+                    winnerId = -1;
+                    return false;
+                }
+            }
         }
+        return true;
+    }
+
     /**
      * Gets the id of the winner, -1 if its a draw.
      *
      * @return int id of winner, or -1 if draw.
      */
     @Override
-    public int getWinner() {
-
-        //TODO Implement this method
-
-
-        return playerId;
-
+    public int getWinner()
+    {
+        return winnerId;
     }
-
 
     /**
      * Resets the game to a new game state.
      */
     @Override
-    public void newGame() {
-        //TODO Implement this method
-    }
+    public void newGame()
+    {
+        playerId = 0;
 
+        for (int i = 0; i < boardSize; i++)
+        {
+            for (int j = 0; j < boardSize; j++)
+            {
+                gameBoard[i][j] = -1;
+            }
+        }
+    }
 }
