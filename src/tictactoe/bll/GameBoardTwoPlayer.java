@@ -1,7 +1,7 @@
 package tictactoe.bll;
 
 import java.util.Random;
-
+//spil
 /**
  * The GameBoardTwoPlayer class is the mandatory implementation for the TicTacToe assignment.
  * It is used for games where there are two human players.
